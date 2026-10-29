@@ -1,6 +1,12 @@
 {
 	"name": "vmjladf",
 	"properties": {
+		"globalParameters": {
+			"email_gpara": {
+				"type": "string",
+				"value": "satti.reddy369@gmail.com"
+			}
+		},
 		"trustModeClaimForMi": {
 			"value": "Disabled",
 			"editable": true
