@@ -1,0 +1,127 @@
+{
+	"name": "5pl_sql_sa_para_e3",
+	"properties": {
+		"activities": [
+			{
+				"name": "email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "logic_body",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-23.germanywestcentral.logic.azure.com:443/workflows/ce3479132e4e4578ab334658389fab61/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=V8CWbf5lzD9yISixRfcbzK6o9Vh6eDiIP00VOHhe0zU",
+					"body": {
+						"value": "@{variables('logic_body')}\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "var_subj",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "subj",
+					"value": {
+						"value": "@{pipeline().parameters.pipeline_para} - @{pipeline().parameters.status}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "var_body",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "body",
+					"value": {
+						"value": "the table @{pipeline().parameters.pipeline_para} is success. status : @{pipeline().parameters.status}.",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "logic_body",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "var_subj",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "var_body",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "logic_body",
+					"value": {
+						"value": "{\n    \"email_id\": \"@{pipeline().globalParameters.email_gpara}\",\n    \"subj\": \"@{variables('subj')}\" ,\n    \"body\": \"@{variables('body')}\"\n    }",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pipeline_para": {
+				"type": "string",
+				"defaultValue": "cust"
+			},
+			"status": {
+				"type": "string",
+				"defaultValue": "success"
+			}
+		},
+		"variables": {
+			"subj": {
+				"type": "String"
+			},
+			"body": {
+				"type": "String"
+			},
+			"logic_body": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "vmjl"
+		},
+		"annotations": []
+	}
+}
