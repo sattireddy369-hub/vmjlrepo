@@ -1,0 +1,10 @@
+{
+	"name": "salk",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://vmjlsa.dfs.core.windows.net/"
+		}
+	}
+}
