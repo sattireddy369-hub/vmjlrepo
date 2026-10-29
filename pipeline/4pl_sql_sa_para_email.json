@@ -1,0 +1,112 @@
+{
+	"name": "4pl_sql_sa_para_email",
+	"properties": {
+		"activities": [
+			{
+				"name": "sql2sa_para",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 45,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "sqlds",
+						"type": "DatasetReference",
+						"parameters": {
+							"tbl": {
+								"value": "@pipeline().parameters.pipeline_para",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sads",
+						"type": "DatasetReference",
+						"parameters": {
+							"tbl1": {
+								"value": "@pipeline().parameters.pipeline_para",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "sql2sa_para",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-23.germanywestcentral.logic.azure.com:443/workflows/ce3479132e4e4578ab334658389fab61/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=V8CWbf5lzD9yISixRfcbzK6o9Vh6eDiIP00VOHhe0zU",
+					"body": {
+						"value": "{\n    \"email_id\": \"satti.reddy369@gmail.com\",\n    \"tbl\": \"prod\" ,\n    \"status\": \"success\"\n    }",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pipeline_para": {
+				"type": "string",
+				"defaultValue": "cust"
+			}
+		},
+		"folder": {
+			"name": "vmjl"
+		},
+		"annotations": []
+	}
+}
