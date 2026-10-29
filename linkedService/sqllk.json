@@ -1,0 +1,24 @@
+{
+	"name": "sqllk",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "vnjls.database.windows.net",
+			"database": "vmjldb",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "vmjldb",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "vmjllk",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "vmjld"
+			}
+		}
+	}
+}

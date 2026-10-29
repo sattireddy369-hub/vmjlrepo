@@ -1,0 +1,15 @@
+{
+	"name": "vmjladf",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "germanywestcentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dfef6964-0f87-4a12-b5b2-165b0e9540be",
+		"tenantId": "3a27b5fa-ee60-4507-bebc-d99fd85ccc64"
+	}
+}
