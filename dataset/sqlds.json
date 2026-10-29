@@ -5,6 +5,12 @@
 			"referenceName": "sqllk",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"tbl": {
+				"type": "string",
+				"defaultValue": "cust"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
@@ -25,7 +31,10 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "cust"
+			"table": {
+				"value": "@dataset().tbl",
+				"type": "Expression"
+			}
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
