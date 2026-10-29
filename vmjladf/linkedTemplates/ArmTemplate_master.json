@@ -1,0 +1,77 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "vmjladf"
+		},
+		"salk_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://vmjlsa.dfs.core.windows.net/"
+		},
+		"sqllk_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "vnjls.database.windows.net"
+		},
+		"sqllk_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "vmjldb"
+		},
+		"sqllk_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "vmjldb"
+		},
+		"vmjllk_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://vmjlkey.vault.azure.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "vmjladf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"salk_properties_typeProperties_url": {
+						"value": "[parameters('salk_properties_typeProperties_url')]"
+					},
+					"vmjllk_properties_typeProperties_baseUrl": {
+						"value": "[parameters('vmjllk_properties_typeProperties_baseUrl')]"
+					},
+					"sqllk_properties_typeProperties_server": {
+						"value": "[parameters('sqllk_properties_typeProperties_server')]"
+					},
+					"sqllk_properties_typeProperties_database": {
+						"value": "[parameters('sqllk_properties_typeProperties_database')]"
+					},
+					"sqllk_properties_typeProperties_userName": {
+						"value": "[parameters('sqllk_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
