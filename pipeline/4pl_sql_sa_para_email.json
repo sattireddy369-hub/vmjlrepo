@@ -92,7 +92,7 @@
 					},
 					"url": "https://prod-23.germanywestcentral.logic.azure.com:443/workflows/ce3479132e4e4578ab334658389fab61/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=V8CWbf5lzD9yISixRfcbzK6o9Vh6eDiIP00VOHhe0zU",
 					"body": {
-						"value": "{\n    \"email_id\": \"satti.reddy369@gmail.com\",\n    \"tbl\": \"prod\" ,\n    \"status\": \"success\"\n    }",
+						"value": "{\n    \"email_id\": \"@{pipeline().globalParameters.email_gpara}\",\n    \"tbl\": \"@{pipeline().parameters.pipeline_para}\" ,\n    \"status\": \"success\"\n    }",
 						"type": "Expression"
 					}
 				}
